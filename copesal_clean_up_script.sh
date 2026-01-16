@@ -8,6 +8,7 @@
 # --- CONFIGURATION ---
 TARGET_USER="copesal"  # The user whose folders we are cleaning
 LOG_FILE="/var/log/school_maintenance.log"
+BLEACHBIT_CFG_URL="https://github.com/fcortesjp/school-maintenance/raw/refs/heads/main/bleachbit.ini"
 
 # Colors for pretty output
 RED='\033[0;31m'
@@ -123,16 +124,38 @@ for pkg in "${APT_LIST[@]}"; do
 done
 
 
-# 5. BLEACHBIT CLEANUP
+# 5. BLEACHBIT (INSTALL/CONFIGURE/RUN)
 # ==========================================
-log_msg "Step 5: Running BleachBit (Preset Mode)..." "$BLUE"
-if command -v bleachbit &> /dev/null; then
+log_msg "Step 5: Setting up BleachBit..." "$BLUE"
+
+# A. Check and Install
+if ! command -v bleachbit &> /dev/null; then
+    log_msg "  BleachBit not found. Installing..." "$YELLOW"
+    apt update >> "$LOG_FILE" 2>&1
+    apt install bleachbit -y >> "$LOG_FILE" 2>&1
+    if [ $? -eq 0 ]; then
+        log_msg "  [OK] BleachBit installed." "$GREEN"
+    else
+        log_msg "  [ERR] Could not install BleachBit." "$RED"
+    fi
+else
+    log_msg "  [OK] BleachBit is already installed." "$GREEN"
+fi
+
+# B. Download Config (Force overwrite to ensure latest version)
+# We place it in /home/fcortes/.config
+mkdir -p /root/.config/bleachbit
+log_msg "  Downloading config from GitHub..." "$NC"
+wget -q -O /home/fcortes/.config/bleachbit/bleachbit.ini "$BLEACHBIT_CFG_URL"
+
+if [ $? -eq 0 ]; then
+    log_msg "  [OK] Config applied." "$GREEN"
+    # C. Run Clean
     bleachbit --clean --preset >> "$LOG_FILE" 2>&1
     log_msg "  [OK] BleachBit cycle complete." "$GREEN"
 else
-    log_msg "  [WARN] BleachBit not found. Skipping." "$YELLOW"
+    log_msg "  [ERR] Failed to download config. Skipping cleanup." "$RED"
 fi
-
 
 # 6. SYSTEM UPDATES (APT)
 # ==========================================
