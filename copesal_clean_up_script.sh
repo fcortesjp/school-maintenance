@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==========================================
-# SCHOOL COMPUTER MAINTENANCE SCRIPT v4
+# SCHOOL COMPUTER MAINTENANCE SCRIPT v5
 # For Linux Mint / Zorin OS
 # ==========================================
 
