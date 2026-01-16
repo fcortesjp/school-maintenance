@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==========================================
-# SCHOOL COMPUTER MAINTENANCE SCRIPT v5
+# SCHOOL COMPUTER MAINTENANCE SCRIPT v6
 # For Linux Mint / Zorin OS
 # ==========================================
 
@@ -169,11 +169,14 @@ log_msg "Step 6: Updating System Packages (APT)..." "$BLUE"
 
 export DEBIAN_FRONTEND=noninteractive
 
+# Define options to force "Keep Old Config" so it never prompts
+APT_OPTIONS="-y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold"
+
 apt update >> "$LOG_FILE" 2>&1
-apt upgrade -y >> "$LOG_FILE" 2>&1
+apt upgrade $APT_OPTIONS >> "$LOG_FILE" 2>&1
 
 if [ $? -eq 0 ]; then
-    log_msg "  [OK] System (APT) Upgraded successfully." "$GREEN"
+    log_msg "  [OK] System (APT) Updated/Upgraded successfully." "$GREEN"
 else
     log_msg "  [ERR] Errors occurred during APT upgrade." "$RED"
 fi
