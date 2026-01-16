@@ -23,6 +23,12 @@ log_msg() {
     echo "$(date): $1" >> "$LOG_FILE"
 }
 
+# Ensure script is run as root (sudo)
+if [ "$EUID" -ne 0 ]; then
+  echo -e "${RED}Please run as root (use sudo).${NC}"
+  exit 1
+fi
+
 # 1. CHECK DISK USAGE (START)
 # ==========================================
 log_msg "--------------------------------" "$BLUE"
