@@ -143,10 +143,10 @@ else
 fi
 
 # B. Download Config (Force overwrite to ensure latest version)
-# We place it in /home/fcortes/.config
+# We place it in /root/.config
 mkdir -p /root/.config/bleachbit
 log_msg "  Downloading config from GitHub..." "$NC"
-wget -q -O /home/fcortes/.config/bleachbit/bleachbit.ini "$BLEACHBIT_CFG_URL"
+wget -q -O /root/.config/bleachbit/bleachbit.ini "$BLEACHBIT_CFG_URL"
 
 if [ $? -eq 0 ]; then
     log_msg "  [OK] Config applied." "$GREEN"
