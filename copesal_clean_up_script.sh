@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==========================================
-# SCHOOL COMPUTER MAINTENANCE SCRIPT v6
+# SCHOOL COMPUTER MAINTENANCE SCRIPT v7
 # For Linux Mint / Zorin OS
 # ==========================================
 
@@ -113,6 +113,7 @@ APT_LIST=(
     "gnome-mahjongg"
     "gnome-mines"
     "gnome-sudoku"
+    "minetest"
 )
 
 for pkg in "${APT_LIST[@]}"; do
